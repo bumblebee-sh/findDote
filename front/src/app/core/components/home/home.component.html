@@ -1,0 +1,21 @@
+<div class="mission">
+  <div class="container">
+    <p class="mission__title ">Our Mission</p>
+    <p class="mission__text">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam aliquid aut delectus dignissimos dolore doloremque dolores doloribus eos maxime molestias, numquam quisquam suscipit unde ut veniam. Adipisci neque nostrum similique!
+    </p>
+  </div>
+</div>
+
+<div class="h3 text-center mb-4 slogan">
+  <span>FIND PET!</span>
+</div>
+<app-loader></app-loader>
+<div class="container pt-4">
+  <div class="row">
+    <div class="col mb-5">
+      <app-filter></app-filter>
+    </div>
+  </div>
+  <app-pet-list [animals]="animals | async"  class="row"></app-pet-list>
+</div>

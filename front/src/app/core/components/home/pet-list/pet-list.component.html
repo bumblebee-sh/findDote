@@ -1,0 +1,25 @@
+<div class="col-lg-3 col-md-4 col-sm-6 mb-4" *ngFor="let animal of animalsList">
+  <mat-card class="pet">
+    <mat-card-header>
+      <mat-card-title>
+        {{animal.name}}
+        <i class="status">{{animal.event}}</i>
+      </mat-card-title>
+      <mat-card-subtitle>
+        <i>{{animal.status}}</i>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="">
+    <mat-card-content>
+      <p>
+        {{ animal.description | shortCut: 100}}
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button type="button">
+        <a [routerLink]="[animal._id]">Detail</a>
+      </button>
+      <button mat-button color="primary">SHARE</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

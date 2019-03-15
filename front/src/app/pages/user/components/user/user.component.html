@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <nav class="navigation">
+        <ul>
+          <li>
+            <a routerLink="./" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+              <span data-title="Profile">Profile</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="animals" routerLinkActive="active">
+              <span data-title="Animals">Animals</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

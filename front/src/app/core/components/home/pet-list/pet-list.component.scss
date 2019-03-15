@@ -1,0 +1,12 @@
+::ng-deep{
+  .pet .mat-card-header-text{
+    margin: 0;
+  }
+}
+
+.pet{
+  .status{
+    font-size: 14px;
+    color: var(--secondary);
+  }
+}

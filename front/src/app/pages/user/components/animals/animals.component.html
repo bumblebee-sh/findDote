@@ -1,0 +1,91 @@
+<form #form="ngForm" [formGroup]="animalForm" (ngSubmit)="animalForm.valid && send(form)" >
+  <div class="row mb-3">
+    <div class="col-md-2">
+      <div class="h5 font-weight-bold">Photo: </div>
+    </div>
+    <div class="col-md-10">
+      <app-file-loader formControlName="file" accept="image/*"></app-file-loader>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-2">
+      <div class="h5 font-weight-bold">Name: </div>
+    </div>
+    <div class="col-md-10">
+      <mat-form-field>
+        <input matInput formControlName="name">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-2">
+      <div class="h5 font-weight-bold">Description </div>
+    </div>
+    <div class="col-md-10">
+      <mat-form-field>
+        <textarea matInput formControlName="description" required></textarea>
+        <mat-error *ngIf="description.hasError('minlength') && !description.hasError('required')">
+          The minimum message length is {{description.errors['minlength']['requiredLength']}} characters.
+        </mat-error>
+        <mat-error *ngIf="description.hasError('required')">
+          Please fill a description. It will help you.
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-2">
+      <div class="h5 font-weight-bold">Event: </div>
+    </div>
+    <div class="col-md-10">
+      <mat-form-field>
+        <mat-select formControlName="event">
+          <mat-option *ngFor="let event of events" [value]="event.value">
+            {{event.title}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-2">
+      <div class="h5 font-weight-bold">Kind of animals :</div>
+    </div>
+    <div class="col-md-10">
+      <mat-form-field>
+        <mat-select formControlName="type">
+          <mat-option *ngFor="let type of petType" [value]="type.type">
+            {{type.title}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-2">
+      <div class="h5 font-weight-bold">Age :</div>
+    </div>
+    <div class="col-md-10">
+      <mat-form-field>
+        <mat-select formControlName="age">
+          <mat-option *ngFor="let age of petAge" [value]="age.value">
+            {{age.title}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-2">
+      <div class="h5 font-weight-bold">Location </div>
+    </div>
+    <div class="col-md-10">
+      <app-map [(mapLocation)]="mapLocation"></app-map>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-2">
+      <button mat-raised-button color="primary" type="submit">Save</button>
+    </div>
+  </div>
+</form>

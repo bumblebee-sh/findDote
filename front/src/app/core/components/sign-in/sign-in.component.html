@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="close" appCloseModalButton>
+    <span>×</span>
+  </div>
+  <div class="row">
+    <div class="col-12 text-center mb-2">
+      <span class="h2">Sign In</span>
+    </div>
+    <form [formGroup]="signInForm" (ngSubmit)="signInForm.valid && singIn()" class="col-12">
+      <div class="">
+        <mat-form-field class="d-block w-100">
+          <input matInput placeholder="Email" type="text" formControlName="email">
+        </mat-form-field>
+      </div>
+      <div class="">
+        <mat-form-field class="d-block w-100">
+          <input matInput placeholder="Password" type="password" formControlName="password">
+        </mat-form-field>
+      </div>
+      <div class="error" *ngIf="err">
+        {{err}}
+      </div>
+      <div class="">
+        <div class="d-flex">
+          <div class="col p-0 text-center d-flex justify-content-center align-items-center">
+            <button mat-raised-button color="primary">Sing in</button>
+          </div>
+          <div class="col p-0 d-flex justify-content-end flex-wrap">
+            <button mat-button type="button" (click)="showPop('SignUp')">Sign up</button>
+            <div class="w-100"></div>
+            <button mat-button type="button" (click)="showPop('ForgotPass')">Forgot password?</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

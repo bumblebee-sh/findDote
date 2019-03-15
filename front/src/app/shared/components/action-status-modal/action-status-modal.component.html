@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="close" appCloseModalButton>
+    <span>×</span>
+  </div>
+  <div class="row text-center">
+    <div class="col-12 mb-2">
+      <span class="h2">Sign In</span>
+    </div>
+    <div class="col-12">
+      <p class="message"
+        [ngClass]="{
+          'error_message': data.messageStatus == 0,
+          'success_message': data.messageStatus == 1
+        }">{{data.text}}</p>
+    </div>
+  </div>
+</div>
+

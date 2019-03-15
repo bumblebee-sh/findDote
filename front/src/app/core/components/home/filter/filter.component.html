@@ -1,0 +1,35 @@
+<form [formGroup]="filterForm" class="pb-4" (ngSubmit)="search()">
+  <div class="row">
+    <div class="col">
+      <mat-select placeholder="Pet">
+        <mat-option *ngFor="let type of petType">
+          {{type.title}}
+        </mat-option>
+      </mat-select>
+    </div>
+    <div class="col">
+      <mat-select placeholder="Age">
+        <mat-option *ngFor="let age of petAge">
+          {{age.title}}
+        </mat-option>
+      </mat-select>
+    </div>
+    <div class="col">
+      <mat-select placeholder="Region">
+        <mat-option *ngFor="let place of regions">
+          {{place.title}}
+        </mat-option>
+      </mat-select>
+    </div>
+    <div class="col">
+      <mat-select placeholder="Type of search">
+        <mat-option *ngFor="let type of typeSearch">
+          {{type.title}}
+        </mat-option>
+      </mat-select>
+    </div>
+    <div class="col">
+      <button class="w-100" mat-raised-button color="primary" type="submit">Search</button>
+    </div>
+  </div>
+</form>

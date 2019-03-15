@@ -1,0 +1,31 @@
+.loader{
+  display: flex;
+  align-items: center;
+}
+#file{
+  overflow: hidden;
+  height: 0;
+  width: 0;
+  position: absolute;
+  left: -999em;
+  visibility: hidden;
+}
+
+.file{
+  &__text{
+    padding-left: 15px;
+    color: var(--secondary);
+    font-size: 14px;
+  }
+  &__remove{
+    color: var(--gray-dark);
+    font-size: 20px;
+    margin-right: 5px;
+  }
+  &__btn{
+    margin: 0 -16px;
+    padding: 0 16px;
+    display: block;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,24 @@
+<div class="border-bottom header">
+  <div class="container">
+    <div class="row">
+      <div class="col align-items-center d-flex">
+        <a class="d-inline-flex align-items-center justify-content-center logo" routerLink="/">
+          <i class="material-icons mr-2">search</i>
+          <span>Find Dote Pet</span>
+        </a>
+      </div>
+      <div class="col d-flex justify-content-end align-items-center">
+        <div class="ml-auto">
+          <ng-template [ngIf]="userState" [ngIfElse]="logged">
+            <a routerLink="user">{{userState.email}}</a>
+            <button mat-button type="button" (click)="logOut()">Log Out</button>
+          </ng-template>
+          <ng-template #logged>
+            <button type="button" mat-button class="mr-2" (click)="showPop(modals.SingIn)">Sing In</button>
+            <button type="button" mat-button (click)="showPop(modals.SingUp)">Sing Up</button>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

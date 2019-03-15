@@ -1,0 +1,8 @@
+<input type="file" id="file" #file (change)="fileLoader($event.target.files[0])" [attr.accept]="accept">
+<div class="loader">
+  <button mat-icon-button type="button" class="file__remove" (click)="clearFile()" *ngIf="text">×</button>
+  <button mat-raised-button type="button">
+    <label for="file" class="file__btn">Pick file</label>
+  </button>
+  <div class="file__text">{{text}}</div>
+</div>
