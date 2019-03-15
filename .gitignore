@@ -5,7 +5,7 @@
 */build
 */tmp
 */out-tsc
-*/app/public
+*/app/public/*
 
 # dependencies
 */node_modules
