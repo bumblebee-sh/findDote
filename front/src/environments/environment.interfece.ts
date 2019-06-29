@@ -3,4 +3,5 @@ export interface IEnvironment {
   googleMapKey: string;
   apiUrl: string;
   localStorage: string;
+  jwtSecret: string;
 }

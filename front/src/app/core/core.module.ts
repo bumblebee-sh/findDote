@@ -15,6 +15,7 @@ import {
   PetListComponent,
   FilterComponent
 } from './components';
+import {MatButtonToggleModule} from "@angular/material";
 
 const COMPONENTS = [
   HeaderComponent,
@@ -32,6 +33,7 @@ const COMPONENTS = [
     CommonModule,
     HttpClientModule,
     SharedModule,
+    MatButtonToggleModule,
   ],
   exports: [
     HttpClientModule,

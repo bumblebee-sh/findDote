@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from "@angular/router";
+import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from '@angular/router';
 import {Store} from '@ngrx/store';
 
 import {IAppState} from '@app/store/app.reducer';
-import {IState} from '@app/pages/user/store/user.reducer';
+import {IState} from '@app/pages/user/store/auth.reducer';
 import {map} from 'rxjs/operators';
 
 @Injectable({

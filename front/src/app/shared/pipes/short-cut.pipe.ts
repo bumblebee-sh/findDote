@@ -9,7 +9,7 @@ export class ShortCutPipe implements PipeTransform {
   private regRex: RegExp = /\w/;
 
   transform(value: any, range?: any): any {
-    let text = null;
+    let text = value;
     if(value && value.length > range) {
       text = this.cropText(value, range);
     }

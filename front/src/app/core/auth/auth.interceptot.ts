@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { take, switchMap } from 'rxjs/operators';
 
 import * as fromApp from '../../store/app.reducer';
-import * as fromAuth from '@app/pages/user/store/user.reducer';
+import * as fromAuth from '@app/pages/user/store/auth.reducer';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

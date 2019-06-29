@@ -4,7 +4,7 @@ import { UserService } from '../../services';
 import { Store } from '@ngrx/store';
 
 import {IAppState} from '@app/store/app.reducer';
-import {UserActions} from '../../store/user.actions';
+import {AuthActions} from '../../store/auth.actions';
 
 import {Subscription} from 'rxjs';
 
@@ -36,7 +36,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const _s = this.store.select('UserStore').subscribe( data => {
       if(!data.user) {
-        return false;
+        return;
       }
       this.userService.getUser(data.user.id).subscribe(res => {
         this.profileForm.patchValue(res);

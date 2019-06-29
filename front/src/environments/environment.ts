@@ -8,6 +8,7 @@ export const environment: IEnvironment = {
   googleMapKey: 'AIzaSyAvf1ArrgFGQxeDk2D10c7KM9c3RRm8ZsQ',
   apiUrl: 'http://localhost:3000',
   localStorage: 'find-app.token',
+  jwtSecret: 'i_love_bread',
 };
 
 /*

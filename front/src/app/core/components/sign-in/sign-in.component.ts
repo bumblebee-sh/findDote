@@ -6,11 +6,9 @@ import { ForgotPasswordComponent } from '../forgot-password/forgot-password.comp
 import {MatDialog, MatDialogRef} from '@angular/material';
 
 import { Store } from '@ngrx/store';
-import * as UserActions from '@app/pages/user/store/user.actions';
+import * as AuthActions from '@app/core/auth/store/auth.actions';
 import {IAppState} from '@app/store/app.reducer';
-
 import {AuthService} from '@app/shared/services';
-import {UserModel} from "@app/shared/models";
 
 type Modals = 'SignUp' | 'ForgotPass';
 
@@ -33,7 +31,17 @@ export class SignInComponent implements OnInit {
     ]
   });
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.store.select('UserStore').subscribe(res => {
+      this.err = null;
+      if (res.error) {
+        this.err = res.error;
+      }
+      if (res.isAuth) {
+        this.dialogRef.close();
+      }
+    });
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -46,16 +54,14 @@ export class SignInComponent implements OnInit {
 
   singIn() {
     this.err = null;
-    this.authService.login(this.signInForm.value).subscribe((res: any) => {
-      const loggedUser: UserModel = {
-        email: res.email
-      };
-      this.store.dispatch(new UserActions.UserLogIn(res));
-      this.dialogRef.close();
-      this.router.navigateByUrl('/user');
-    }, ({error}) => {
-      this.err = error.message;
-    });
+    this.store.dispatch(new AuthActions.LoginStart(this.signInForm.value));
+    // this.authService.login(this.signInForm.value).subscribe((res: any) => {
+    //   this.store.dispatch(new AuthActions.LogIn( ));
+    //   this.dialogRef.close();
+    //   this.router.navigateByUrl('/user');
+    // }, ({error}) => {
+    //   this.err = error.message;
+    // });
   }
 
   showPop(type: Modals) {

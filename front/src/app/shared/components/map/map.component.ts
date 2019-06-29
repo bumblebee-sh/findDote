@@ -3,9 +3,74 @@ import {environment} from '@env/environment';
 
 declare const google: any;
 
+enum Colors {
+  Purple = '#7b00ff',
+  Orange = '#ff7200',
+}
+
 interface ICoordinates {
   lat: number;
   lng: number;
+}
+
+interface CircleOptions {
+  strokeColor?: Colors;
+  strokeOpacity?: number;
+  strokeWeight?: number;
+  fillOpacity?: number;
+  fillColor?: Colors;
+  clickable?: boolean;
+  editable?: boolean;
+  zIndex?: number;
+  map?: any;
+  center?: ICoordinates;
+  radius?: number;
+}
+
+class SearchCircle implements CircleOptions {
+  strokeColor = Colors.Purple;
+  strokeOpacity = 0.8;
+  strokeWeight = 2;
+  fillOpacity = 0.15;
+  fillColor = Colors.Purple;
+  clickable = true;
+  editable = true;
+  zIndex = 1;
+  map: any;
+  center: ICoordinates;
+  radius = 500;
+
+  constructor(options: CircleOptions) {
+    for (const key in options) {
+      if (options.hasOwnProperty(key)) {
+        this[key] = options[key];
+      }
+    }
+  }
+}
+
+type CircleType = 'search' | 'add';
+
+function circleFabric(type: CircleType, options: CircleOptions) {
+  switch (type) {
+    case 'add':
+      return new SearchCircle({
+        ...options,
+        strokeColor: Colors.Purple,
+        fillColor: Colors.Purple
+      });
+    case 'search':
+      return new SearchCircle({
+        ...options,
+        strokeColor: Colors.Orange,
+        fillColor: Colors.Orange
+      });
+    default: return new SearchCircle({
+      ...options,
+      strokeColor: Colors.Purple,
+      fillColor: Colors.Purple
+    });
+  }
 }
 
 @Component({
@@ -13,18 +78,23 @@ interface ICoordinates {
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
+
 export class MapComponent implements OnInit {
-  @ViewChild('map') mapElem: ElementRef;
+  @ViewChild('map', {static : false}) mapElem: ElementRef;
+  @Input() searchMode: any;
   @Input() mapLocation: any;
   @Output() mapLocationChange = new EventEmitter();
 
   map: any;
   currentPosition: ICoordinates;
   area: any;
+  isSearch = false;
 
   constructor() { }
 
   async ngOnInit() {
+    this.isSearch = this.searchMode !== undefined;
+
     try {
       await this.initScript();
     } catch (e) {
@@ -32,13 +102,14 @@ export class MapComponent implements OnInit {
     }
 
     await this.initMap(this.mapElem.nativeElement);
-
+    SearchCircle.prototype.map = this.map;
     this.map.addListener('click', (e)  => {
       this.currentPosition = {
         lat: e.latLng.lat(),
         lng: e.latLng.lng(),
       };
       this.drawCircle(this.currentPosition);
+      this.getMapLocation(this.currentPosition, this.area!.getRadius() || 500);
     });
   }
 
@@ -68,7 +139,7 @@ export class MapComponent implements OnInit {
     });
   }
 
-  private getGeolocation(): Promise<ICoordinates>{
+  private getGeolocation(): Promise<ICoordinates> {
     let latLng: ICoordinates;
     return new Promise((resolve, reject) => {
       if (navigator.geolocation) {
@@ -78,7 +149,7 @@ export class MapComponent implements OnInit {
             lng: position.coords.longitude
           };
           resolve(latLng);
-        }, function() {
+        }, () => {
           latLng = {lat: -34.397, lng: 150.644};
           resolve(latLng);
         });
@@ -91,19 +162,7 @@ export class MapComponent implements OnInit {
 
   private async drawCircle(center) {
     if (!this.area) {
-      this.area = new google.maps.Circle({
-        strokeColor: '#7b00ff',
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillOpacity: 0.35,
-        fillColor: '#dea2ff',
-        clickable: true,
-        editable: true,
-        zIndex: 1,
-        map: this.map,
-        center,
-        radius: 500
-      });
+      this.area = new google.maps.Circle( circleFabric( this.isSearch ? 'search' : 'add', {center}));
       this.area.addListener('bounds_changed', () => {
         if (this.mapLocation) {
           this.getMapLocation(this.currentPosition, this.area.getRadius());
@@ -114,8 +173,9 @@ export class MapComponent implements OnInit {
     }
   }
 
-  private getMapLocation(center, radius) {
-    this.mapLocation = {center, radius};
+  private getMapLocation(coordinatesObj, radius) {
+    this.mapLocation = {
+      coordinates: [coordinatesObj.lng, coordinatesObj.lat], radius};
     this.mapLocationChange.emit(this.mapLocation);
   }
 }

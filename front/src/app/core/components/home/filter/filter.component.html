@@ -1,5 +1,5 @@
 <form [formGroup]="filterForm" class="pb-4" (ngSubmit)="search()">
-  <div class="row">
+  <div class="row align-items-center">
     <div class="col">
       <mat-select placeholder="Pet">
         <mat-option *ngFor="let type of petType">
@@ -15,21 +15,22 @@
       </mat-select>
     </div>
     <div class="col">
-      <mat-select placeholder="Region">
-        <mat-option *ngFor="let place of regions">
-          {{place.title}}
-        </mat-option>
-      </mat-select>
-    </div>
-    <div class="col">
       <mat-select placeholder="Type of search">
         <mat-option *ngFor="let type of typeSearch">
           {{type.title}}
         </mat-option>
       </mat-select>
     </div>
+    <div class="col flex-grow-0">
+      <button mat-button (click)="toggleMap()">Map</button>
+    </div>
     <div class="col">
       <button class="w-100" mat-raised-button color="primary" type="submit">Search</button>
+    </div>
+    <div class="col-12 pt-4" *ngIf="showMap">
+      <app-map
+        searchMode
+        [(mapLocation)]="mapLocation"></app-map>
     </div>
   </div>
 </form>

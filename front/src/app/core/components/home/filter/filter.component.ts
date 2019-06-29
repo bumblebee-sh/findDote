@@ -10,7 +10,9 @@ import {IPetTypes, PetTypes, IPetAge, PetAge, IEventType} from '@app/shared/mode
 })
 
 export class FilterComponent implements OnInit {
-  regions: any;
+  mapLocation: any = {};
+  showMap = false;
+
   petType: IPetTypes[] = [
     { title: 'Dog', type: PetTypes.Dog },
     { title: 'Cat', type: PetTypes.Cat },
@@ -39,12 +41,14 @@ export class FilterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.searchService.getRegions().subscribe(res => {
-      this.regions = res;
-    });
+
   }
 
   search() {
     console.log('search', this.filterForm.value);
+  }
+
+  toggleMap() {
+    this.showMap = !this.showMap;
   }
 }

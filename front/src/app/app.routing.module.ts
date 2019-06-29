@@ -7,6 +7,7 @@ const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'user', loadChildren: './pages/user/user.module#UserModule', canActivate: [AuthGuardService]},
   {path: '404', loadChildren: './pages/not-found/not-found.module#NotFoundModule'},
+  {path: ':id', loadChildren: './pages/animal/animal.module#AnimalModule'},
   {path: '**', pathMatch: 'full', redirectTo: '404'}
 ];
 

@@ -19,8 +19,8 @@ enum FileType {
 })
 
 export class FileLoaderComponent implements ControlValueAccessor {
-  @ViewChild('type') type: FileType;
-  @ViewChild('file') fileFiled: ElementRef;
+  @ViewChild('type', {static : false}) type: FileType;
+  @ViewChild('file', {static : false}) fileFiled: ElementRef;
   @Input('accept') accept: string;
 
   text: string;

@@ -1,4 +1,7 @@
 export * from './user.model';
+export * from './pet-age';
+export * from './pet-events';
+export * from './pet-type';
 
 export enum PetTypes {
   Other,
@@ -12,6 +15,7 @@ export interface IPetTypes {
 }
 
 export enum PetAge {
+  Unknown,
   Kitten,
   Teenager,
   Adult
@@ -36,4 +40,5 @@ export interface IPet {
   area: object;
   status: number;
   age: number;
+  image: string;
 }

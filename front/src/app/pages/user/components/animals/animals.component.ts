@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, NgForm, Validators} from '@angular/forms';
-import {IPetAge, IPetTypes, PetAge, PetTypes, IEventType} from "@app/shared/models";
-import {AnimalService} from "../../services";
-import {ActionStatusService} from "@app/shared/services";
+import {IPetAge, IPetTypes, PetAge, PetTypes, IEventType} from '@app/shared/models';
+import {AnimalService} from '../../services';
+import {ActionStatusService} from '@app/shared/services';
 
 @Component({
   selector: 'app-animals',
@@ -68,7 +68,17 @@ export class AnimalsComponent implements OnInit {
 
     data.append('animal', JSON.stringify({
       ...this.animalForm.value,
-      area: this.mapLocation
+      location: {
+        type : 'Point',
+        coordinates: this.mapLocation.coordinates
+      },
+      area: {
+        location: {
+          type : 'Point',
+          coordinates: this.mapLocation.coordinates
+        },
+        radius: this.mapLocation.radius
+      }
     }));
 
     if (file) {

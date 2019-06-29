@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import {MatButtonModule, MatCheckboxModule, MatInputModule, MatDialogModule, MatCardModule, MatSelectModule} from '@angular/material';
+import {MatButtonModule, MatCheckboxModule, MatInputModule, MatDialogModule, MatCardModule, MatSelectModule, MatChipsModule} from '@angular/material';
 
-const MODULES = [MatButtonModule, MatCheckboxModule, MatInputModule, MatDialogModule, MatCardModule, MatSelectModule];
+const MODULES = [MatButtonModule, MatCheckboxModule, MatInputModule, MatDialogModule, MatCardModule, MatSelectModule, MatChipsModule];
 
 @NgModule({
   imports: [

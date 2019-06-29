@@ -25,7 +25,6 @@ export class ActionStatusService {
   }
 
   private showModal(text: string, messageStatus: StatusType) {
-    console.warn('showModa', messageStatus);
     this.dialog.open(ActionStatusModalComponent, {
       data: {text, messageStatus}
     });

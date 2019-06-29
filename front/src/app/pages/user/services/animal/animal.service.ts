@@ -12,7 +12,7 @@ export class AnimalService {
   ) { }
 
   addPet(data: any) {
-    return this.http.post( environment.apiUrl + '/pet', data );
+    return this.http.post( environment.apiUrl + '/pet', data, {withCredentials: true} );
   }
 
   getAnimals() {

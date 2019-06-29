@@ -3,15 +3,17 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { CloseModalButtonDirective } from './directives';
+import { CloseModalButtonDirective, DefaultImageDirective } from './directives';
 import {
   ShortCutPipe
 } from './pipes';
 import { ActionStatusModalComponent, MapComponent, FileLoaderComponent, LoaderComponent } from './components';
 import { MaterialModule} from './modules';
 
+
 const FEATURES = [
   CloseModalButtonDirective,
+  DefaultImageDirective,
   ShortCutPipe,
   MapComponent,
   FileLoaderComponent,
