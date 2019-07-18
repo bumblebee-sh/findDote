@@ -1,76 +1,24 @@
-import {Component, ElementRef, OnInit, ViewChild, Input, Output, EventEmitter} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
+
 import {environment} from '@env/environment';
 
-declare const google: any;
+import {IPet, LocationModel} from '@app/shared/models';
 
-enum Colors {
-  Purple = '#7b00ff',
-  Orange = '#ff7200',
-}
+import {drawMarker, drawCircle} from './map-objects';
+
+declare const google: any;
 
 interface ICoordinates {
   lat: number;
   lng: number;
-}
-
-interface CircleOptions {
-  strokeColor?: Colors;
-  strokeOpacity?: number;
-  strokeWeight?: number;
-  fillOpacity?: number;
-  fillColor?: Colors;
-  clickable?: boolean;
-  editable?: boolean;
-  zIndex?: number;
-  map?: any;
-  center?: ICoordinates;
-  radius?: number;
-}
-
-class SearchCircle implements CircleOptions {
-  strokeColor = Colors.Purple;
-  strokeOpacity = 0.8;
-  strokeWeight = 2;
-  fillOpacity = 0.15;
-  fillColor = Colors.Purple;
-  clickable = true;
-  editable = true;
-  zIndex = 1;
-  map: any;
-  center: ICoordinates;
-  radius = 500;
-
-  constructor(options: CircleOptions) {
-    for (const key in options) {
-      if (options.hasOwnProperty(key)) {
-        this[key] = options[key];
-      }
-    }
-  }
-}
-
-type CircleType = 'search' | 'add';
-
-function circleFabric(type: CircleType, options: CircleOptions) {
-  switch (type) {
-    case 'add':
-      return new SearchCircle({
-        ...options,
-        strokeColor: Colors.Purple,
-        fillColor: Colors.Purple
-      });
-    case 'search':
-      return new SearchCircle({
-        ...options,
-        strokeColor: Colors.Orange,
-        fillColor: Colors.Orange
-      });
-    default: return new SearchCircle({
-      ...options,
-      strokeColor: Colors.Purple,
-      fillColor: Colors.Purple
-    });
-  }
 }
 
 @Component({
@@ -82,13 +30,28 @@ function circleFabric(type: CircleType, options: CircleOptions) {
 export class MapComponent implements OnInit {
   @ViewChild('map', {static : false}) mapElem: ElementRef;
   @Input() searchMode: any;
-  @Input() mapLocation: any;
+  @Input() mapLocation: LocationModel;
   @Output() mapLocationChange = new EventEmitter();
+  @Input() set animals(value) {
+    if (!value) {
+      return;
+    }
+    this.setSearchResult(value);
+  }
+  @Input() set options(value) {
+    if (!value) {
+      return;
+    }
+    this.setOptions(value);
+  }
 
   map: any;
   currentPosition: ICoordinates;
   area: any;
+  marker: any;
   isSearch = false;
+
+  private searchResultPoints: [{circle: any, marker: any}] = [] as any;
 
   constructor() { }
 
@@ -102,13 +65,13 @@ export class MapComponent implements OnInit {
     }
 
     await this.initMap(this.mapElem.nativeElement);
-    SearchCircle.prototype.map = this.map;
+
     this.map.addListener('click', (e)  => {
       this.currentPosition = {
         lat: e.latLng.lat(),
         lng: e.latLng.lng(),
       };
-      this.drawCircle(this.currentPosition);
+      this.setCircle(this.currentPosition);
       this.getMapLocation(this.currentPosition, this.area!.getRadius() || 500);
     });
   }
@@ -160,9 +123,19 @@ export class MapComponent implements OnInit {
     });
   }
 
-  private async drawCircle(center) {
+  private async setCircle(center: ICoordinates) {
     if (!this.area) {
-      this.area = new google.maps.Circle( circleFabric( this.isSearch ? 'search' : 'add', {center}));
+      this.area = drawCircle(this.isSearch ? 'search' : 'add', {center, map: this.map});
+      if (!this.isSearch) {
+        this.marker = drawMarker(1, { position: center, map: this.map });
+      }
+      this.area.addListener('center_changed', () => {
+        this.currentPosition = {
+          lat: this.area.center.lat(),
+          lng: this.area.center.lng(),
+        };
+        this.getMapLocation(this.currentPosition, this.area.getRadius());
+      });
       this.area.addListener('bounds_changed', () => {
         if (this.mapLocation) {
           this.getMapLocation(this.currentPosition, this.area.getRadius());
@@ -170,12 +143,63 @@ export class MapComponent implements OnInit {
       });
     } else {
       this.area.setCenter(center);
+      if (this.marker) {
+        this.marker.setPosition(center);
+      }
     }
   }
 
-  private getMapLocation(coordinatesObj, radius) {
+  private getMapLocation(coordinatesObj: ICoordinates, radius: number) {
     this.mapLocation = {
-      coordinates: [coordinatesObj.lng, coordinatesObj.lat], radius};
+      lng: coordinatesObj.lng,
+      lat: coordinatesObj.lat,
+      radius
+    };
     this.mapLocationChange.emit(this.mapLocation);
+  }
+
+  private setSearchResult(animalsList: IPet[]) {
+    if (this.searchResultPoints.length) {
+      this.searchResultPoints.forEach( item => {
+        for (const key in item) {
+          if (item.hasOwnProperty(key)) {
+            item[key].setMap(null);
+          }
+        }
+      });
+    }
+    animalsList.forEach( animal => {
+      const center = {
+        lng: animal.area.location.coordinates[0],
+        lat: animal.area.location.coordinates[1]
+      };
+
+      const circleOptions = {
+        center,
+        radius: animal.area.radius,
+        editable: false,
+        zIndex: 0,
+        map: this.map
+      };
+
+      const markerOptions = {
+        position: center,
+        map: this.map
+      };
+
+      this.searchResultPoints.push({
+        circle: drawCircle(+animal.event, circleOptions),
+        marker: drawMarker(+animal.type, markerOptions),
+      });
+    });
+  }
+
+  private setOptions(options) {
+    if (this.marker) {
+      this.marker.setIcon();
+    }
+    if (this.area) {
+
+    }
   }
 }

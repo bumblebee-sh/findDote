@@ -8,10 +8,12 @@ import {IPet } from '@app/shared/models';
 })
 
 export class PetListComponent implements OnInit {
-  @Input('animals') animalsList: IPet[];
+  @Input() animals: IPet[];
+
   constructor() { }
 
   ngOnInit() {
+
   }
 
 }

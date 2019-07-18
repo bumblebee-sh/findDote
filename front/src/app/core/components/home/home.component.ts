@@ -20,7 +20,10 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.animals = this.animalService.getAnimals();
+    this.animalService.getAnimals().subscribe(animals => {
+      console.log(animals);
+      this.animals = animals;
+    });
     if (this.activatedRoute.snapshot.queryParams.token) {
       this.authService.confirmPassword(this.activatedRoute.snapshot.queryParams.token).subscribe(res => {
         this.actionStatusService.succes('Email is confirmed. Please Sing In to continue');
@@ -30,4 +33,9 @@ export class HomeComponent implements OnInit {
       });
     }
   }
+
+  search(searchResult) {
+    this.animals = searchResult;
+  }
+
 }

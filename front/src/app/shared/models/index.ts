@@ -2,6 +2,10 @@ export * from './user.model';
 export * from './pet-age';
 export * from './pet-events';
 export * from './pet-type';
+export * from './location.model';
+export * from './pet-event.enum';
+export * from './event-colors.enum';
+export * from './map-marker.enum';
 
 export enum PetTypes {
   Other,
@@ -11,7 +15,7 @@ export enum PetTypes {
 
 export interface IPetTypes {
   title: string;
-  type: PetTypes;
+  value: PetTypes;
 }
 
 export enum PetAge {
@@ -31,14 +35,21 @@ export interface IEventType {
   value: 1 | 0 | 2;
 }
 
+interface IArea {
+  location: any;
+  radius: number;
+}
+
 export interface IPet {
   _id?: number;
   createdAt: string;
   name: string;
   event: string;
   description: string;
-  area: object;
-  status: number;
-  age: number;
-  image: string;
+  area: IArea;
+  age: string;
+  type: string;
+  eventText: string;
+  typeText: string;
+  ageText: string;
 }

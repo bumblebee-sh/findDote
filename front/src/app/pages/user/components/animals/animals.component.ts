@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, NgForm, Validators} from '@angular/forms';
-import {IPetAge, IPetTypes, PetAge, PetTypes, IEventType} from '@app/shared/models';
+
+import {IPetAge, IPetTypes, PetAge, PetTypes, IEventType, LocationModel} from '@app/shared/models';
 import {AnimalService} from '../../services';
 import {ActionStatusService} from '@app/shared/services';
 
@@ -9,13 +10,14 @@ import {ActionStatusService} from '@app/shared/services';
   templateUrl: './animals.component.html',
   styleUrls: ['./animals.component.scss']
 })
+
 export class AnimalsComponent implements OnInit {
-  mapLocation: any = {};
+  mapLocation: LocationModel = {} as LocationModel;
 
   petType: IPetTypes[] = [
-    { title: 'Other', type: PetTypes.Other },
-    { title: 'Dog', type: PetTypes.Dog },
-    { title: 'Cat', type: PetTypes.Cat },
+    { title: 'Other', value: PetTypes.Other },
+    { title: 'Dog', value: PetTypes.Dog },
+    { title: 'Cat', value: PetTypes.Cat },
   ];
 
   petAge: IPetAge[] = [
@@ -39,7 +41,7 @@ export class AnimalsComponent implements OnInit {
       ''
     ],
     type: [
-      this.petType[0].type
+      this.petType[0].value
     ],
     event: [
       this.events[0].value
@@ -68,14 +70,14 @@ export class AnimalsComponent implements OnInit {
 
     data.append('animal', JSON.stringify({
       ...this.animalForm.value,
-      location: {
-        type : 'Point',
-        coordinates: this.mapLocation.coordinates
-      },
+      // location: {
+      //   type : 'Point',
+      //   coordinates: [this.mapLocation.lng, this.mapLocation.lat]
+      // },
       area: {
         location: {
           type : 'Point',
-          coordinates: this.mapLocation.coordinates
+          coordinates: [this.mapLocation.lng, this.mapLocation.lat]
         },
         radius: this.mapLocation.radius
       }

@@ -6,4 +6,5 @@ export const environment: IEnvironment = {
   apiUrl: 'http://localhost:3000',
   localStorage: 'find-app.verifyToken.ts',
   jwtSecret: 'i_love_bread',
+  mapIcon: '/assets/map_icons'
 };

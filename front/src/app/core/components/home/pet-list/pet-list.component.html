@@ -1,12 +1,12 @@
-<div class="col-lg-3 col-md-4 col-sm-6 mb-4" *ngFor="let animal of animalsList">
+<div class="col-lg-3 col-md-4 col-sm-6 mb-4" *ngFor="let animal of animals">
   <mat-card class="pet">
     <mat-card-header>
       <mat-card-title>
         {{animal.name}}
-        <i class="status">{{animal.event}}</i>
+        <i class="status">{{animal.eventText}}</i>
       </mat-card-title>
       <mat-card-subtitle>
-        <i>{{animal.status}}</i>
+        <i>{{animal.typeText}}</i>
       </mat-card-subtitle>
     </mat-card-header>
     <img mat-card-image src="{{animal.image}}" alt="" defaultImage>

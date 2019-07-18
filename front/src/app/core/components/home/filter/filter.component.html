@@ -1,35 +1,37 @@
 <form [formGroup]="filterForm" class="pb-4" (ngSubmit)="search()">
   <div class="row align-items-center">
     <div class="col">
-      <mat-select placeholder="Pet">
-        <mat-option *ngFor="let type of petType">
-          {{type.title}}
+      <mat-select placeholder="Type of search" formControlName="searchType">
+        <mat-option *ngFor="let searchType of typeSearch" [value]="searchType.value">
+          {{searchType.title}}
         </mat-option>
       </mat-select>
     </div>
     <div class="col">
-      <mat-select placeholder="Age">
-        <mat-option *ngFor="let age of petAge">
+      <mat-select placeholder="Pet" formControlName="pet">
+        <mat-option *ngFor="let petType of petType" [value]="petType.value">
+          {{petType.title}}
+        </mat-option>
+      </mat-select>
+    </div>
+    <div class="col">
+      <mat-select placeholder="Age" formControlName="age">
+        <mat-option *ngFor="let age of petAge" [value]="age.value">
           {{age.title}}
         </mat-option>
       </mat-select>
     </div>
-    <div class="col"> 
-      <mat-select placeholder="Type of search">
-        <mat-option *ngFor="let type of typeSearch">
-          {{type.title}}
-        </mat-option>
-      </mat-select>
-    </div>
     <div class="col flex-grow-0">
-      <button mat-button (click)="toggleMap()">Map</button>
+      <button mat-button type="button" (click)="toggleMap()">Map</button>
     </div>
     <div class="col">
       <button class="w-100" mat-raised-button color="primary" type="submit">Search</button>
     </div>
     <div class="col-12 pt-4" *ngIf="showMap">
+      <button class="mb-2" (click)="resetMap()" mat-button color="primary" type="button">Clear map</button>
       <app-map
         searchMode
+        [animals]="animals"
         [(mapLocation)]="mapLocation"></app-map>
     </div>
   </div>

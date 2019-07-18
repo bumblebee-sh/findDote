@@ -54,7 +54,7 @@
     <div class="col-md-10">
       <mat-form-field>
         <mat-select formControlName="type">
-          <mat-option *ngFor="let type of petType" [value]="type.type">
+          <mat-option *ngFor="let type of petType" [value]="type.value">
             {{type.title}}
           </mat-option>
         </mat-select>
@@ -80,7 +80,12 @@
       <div class="h5 font-weight-bold">Location </div>
     </div>
     <div class="col-md-10">
-      <app-map [(mapLocation)]="mapLocation"></app-map>
+      <app-map
+        [options]="{
+          animal: animalForm.value.type,
+          event: animalForm.value.event
+        }"
+        [(mapLocation)]="mapLocation"></app-map>
     </div>
   </div>
   <div class="row mb-3">
