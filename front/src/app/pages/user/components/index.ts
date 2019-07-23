@@ -1,3 +1,2 @@
 export * from './user/user.component';
-export * from './profile/profile.component';
 export * from './animals/animals.component';

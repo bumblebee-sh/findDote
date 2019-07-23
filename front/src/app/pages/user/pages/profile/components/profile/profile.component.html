@@ -1,4 +1,13 @@
+<app-loader *ngIf="loader"></app-loader>
 <form [formGroup]="profileForm" (ngSubmit)="profileForm.valid && send()" class="col-12 pt-5">
+  <div class="row">
+    <div class="col-md-2">
+      <div class="h5 font-weight-bold">Image: </div>
+    </div>
+    <div class="col-md-10">
+      <app-file-loader formControlName="image" accept="image/*"></app-file-loader>
+    </div>
+  </div>
   <div class="row">
     <div class="col-md-2">
       <div class="h5 font-weight-bold">Name: </div>
@@ -15,15 +24,9 @@
     </div>
     <div class="col-md-10">
       <mat-form-field>
-        <mat-select>
-          <mat-option  [value]="'str'">
-            private person
-          </mat-option>
-          <mat-option  [value]="'str'">
-            Organization
-          </mat-option>
-          <mat-option  [value]="'str'">
-            Nursery
+        <mat-select formControlName="type">
+          <mat-option *ngFor="let userType of userTypes" [value]="userType.type">
+            {{userType.title}}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -36,6 +39,16 @@
     <div class="col-md-10">
       <mat-form-field>
         <input matInput formControlName="email">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <div class="h5 font-weight-bold">Description: </div>
+    </div>
+    <div class="col-md-10">
+      <mat-form-field>
+        <textarea matInput formControlName="description"></textarea>
       </mat-form-field>
     </div>
   </div>

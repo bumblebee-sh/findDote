@@ -1,4 +1,4 @@
-import { Component, OnDestroy, AfterContentInit } from '@angular/core';
+import { Component, OnDestroy, AfterContentInit, ElementRef, OnInit, Renderer2, Input } from '@angular/core';
 
 @Component({
   selector: 'app-loader',
@@ -6,13 +6,21 @@ import { Component, OnDestroy, AfterContentInit } from '@angular/core';
   styleUrls: ['./loader.component.scss']
 })
 
-export class LoaderComponent implements AfterContentInit, OnDestroy {
-  animationTime: number = 600;
-  active: boolean = false;
-  timer: any;
+export class LoaderComponent implements AfterContentInit, OnDestroy, OnInit {
+  @Input() backgroundColor = '#fff';
 
-  constructor() { }
+  private animationTime = 600;
+  private active = false;
+  private timer: any;
 
+  constructor(
+    private elRef: ElementRef,
+    private renderer: Renderer2,
+  ) { }
+
+  ngOnInit() {
+    this.renderer.addClass((this.elRef.nativeElement as HTMLElement ).parentElement, 'relative');
+  }
   ngOnDestroy() {
     clearTimeout(this.timer);
   }

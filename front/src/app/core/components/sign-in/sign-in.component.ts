@@ -55,13 +55,6 @@ export class SignInComponent implements OnInit {
   singIn() {
     this.err = null;
     this.store.dispatch(new AuthActions.LoginStart(this.signInForm.value));
-    // this.authService.login(this.signInForm.value).subscribe((res: any) => {
-    //   this.store.dispatch(new AuthActions.LogIn( ));
-    //   this.dialogRef.close();
-    //   this.router.navigateByUrl('/user');
-    // }, ({error}) => {
-    //   this.err = error.message;
-    // });
   }
 
   showPop(type: Modals) {

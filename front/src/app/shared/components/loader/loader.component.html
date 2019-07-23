@@ -1,16 +1,18 @@
-<div class="loader">
+<div class="loader" [ngStyle]="{
+                        'background-color' : backgroundColor
+                      }">
   <div class="icon" [class.animate]="active">
     <div class="icon__fragment icon__fragment--l-t">
-      <i class="material-icons">search</i>
+      <img class="icon__img" src="./assets/loader.png" alt="">
     </div>
     <div class="icon__fragment icon__fragment--r-t">
-      <i class="material-icons">search</i>
+      <img class="icon__img" src="./assets/loader.png" alt="">
     </div>
     <div class="icon__fragment icon__fragment--l-b">
-      <i class="material-icons">search</i>
+      <img class="icon__img" src="./assets/loader.png" alt="">
     </div>
     <div class="icon__fragment icon__fragment--r-b">
-      <i class="material-icons">search</i>
+      <img class="icon__img" src="./assets/loader.png" alt="">
     </div>
   </div>
 </div>

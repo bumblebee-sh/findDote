@@ -70,10 +70,6 @@ export class AnimalsComponent implements OnInit {
 
     data.append('animal', JSON.stringify({
       ...this.animalForm.value,
-      // location: {
-      //   type : 'Point',
-      //   coordinates: [this.mapLocation.lng, this.mapLocation.lat]
-      // },
       area: {
         location: {
           type : 'Point',
