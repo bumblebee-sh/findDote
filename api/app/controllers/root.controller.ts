@@ -1,7 +1,7 @@
 import {Router, Response, Request} from 'express';
 import * as jwt from 'jsonwebtoken';
 
-import {UserModel} from "../models";
+import {UserModel, IUser} from "../models";
 import {CONST} from "../config";
 import {MongoError} from "mongodb";
 import {Mail, session} from "../helper";
@@ -27,7 +27,7 @@ class RootController {
 
     private getSession(req: Request, res: Response) {
         if (req.headers.authorization && req.session!.user) {
-            return res.status(200).send(session.getCurrentSeesion(req));
+            return res.status(200).send(session.getCurrentSession(req));
         }
         res.status(403).send({message: 'No Authorized'});
     }
@@ -54,16 +54,13 @@ class RootController {
             }
             */
             if (!doc.checkPassword(body.password)) {
-                return  res.status(401).send({message: 'password is incorrect'});
+                return  res.status(401).send({message: "Email/password are incorrect"});
             }
 
-            const userDoc: any = doc.toJSON();
-            delete userDoc.status;
             const user = {
-                user: userDoc,
+                user: this.setUserData(doc.toJSON()),
                 token: this.setToken(doc._id, doc.email)
             };
-            req.session['user '] = 'qweqweqwe';
             session.setSession(req, user);
             res.status(200).send(user);
         });
@@ -75,14 +72,14 @@ class RootController {
         newUser.save((err: MongoError, doc: any) => {
             if (err) {
                 if (err.code === 11000) {
-                    return res.status(401).send({message: 'Email already taken'});
+                    return res.status(400).send({message: 'Email already taken'});
                 }
                 return res.status(500).send(err);
             }
             const user = doc.toJSON();
             const mail = new Mail(body.email, user._id);
             const result = mail.sendMail();
-            res.status(200).send({ result });
+            res.status(200).send({ user });
         });
     }
 
@@ -91,6 +88,13 @@ class RootController {
             exp: Date.now() + (1000 * 60 * 60 * 24 * 30),
             data: { id, email }
         }, CONST.secret);
+    }
+
+    private setUserData(user: any): {email: string, id: string} {
+        return {
+            email: user.email,
+            id: user._id
+        };
     }
 }
 

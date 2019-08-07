@@ -1,5 +1,5 @@
 import {Router, Request, Response} from 'express';
-import {UserRouter, RootRoutes, PetRoutes} from '../controllers';
+import {UserRouter, RootRoutes, PetRoutes, SearchRoute} from '../controllers';
 
 export default class Routers {
     private static router: Router = Router();
@@ -7,6 +7,7 @@ export default class Routers {
         this.router.use('/', RootRoutes);
         this.router.use('/user', UserRouter);
         this.router.use('/pet', PetRoutes);
+        this.router.use('/search', SearchRoute);
         return this.router;
     }
 }

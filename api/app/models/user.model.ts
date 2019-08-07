@@ -14,6 +14,14 @@ export interface IUserModel extends IUser, Document {
 }
 
 export const UserSchema: Schema<IUserModel> = new Schema({
+    avatar: {
+        type: String,
+        default: ''
+    },
+    description: {
+        type: String,
+        default: ''
+    },
     email: {
         type: String,
         required: true,
@@ -45,7 +53,6 @@ UserSchema.pre('save', function(this: IUserModel, next: NextFunction) {
 });
 
 UserSchema.methods.checkPassword = function(this: IUserModel, pass) {
-    console.log(`${pass}`, `${this.password}`);
     return bcrypt.compareSync(`${pass}`, this.password);
 };
 

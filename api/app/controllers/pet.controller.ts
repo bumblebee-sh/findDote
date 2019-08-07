@@ -1,40 +1,23 @@
 import {Router, Response, Request} from 'express';
 import {UploadedFile} from "express-fileupload";
-import {PetModel, IPet} from '../models';
-
-enum Event {
-    All = 0,
-    Found,
-    Lost
-}
-
-enum PetAge {
-    Kitten,
-    Teenager,
-    Adult
-}
-
-enum PetTypes {
-    Other,
-    Dog,
-    Cat
-}
+import {PetModel, PetTypes, PetEvent} from '../models';
+import {verifyToken} from '../middlewares';
 
 class PetController {
     private router: Router = Router();
 
     public routers() {
         this.router.get('/', this.root);
-        this.router.post('/', this.addPet.bind(this));
+        this.router.post('/', verifyToken, this.addPet.bind(this));
         this.router.get('/:petId', this.findPet);
-        this.router.patch('/:petId', this.updatePet);
+        this.router.patch('/:petId', verifyToken, this.updatePet);
         return this.router;
     }
 
     private root(req: Request, res: Response) {
         PetModel.find({}).then(docs => {
             const data = docs.map((el) => {
-                el.event = Event[+el.event];
+                el.event = PetEvent[+el.event];
                 el.type = PetTypes[+el.event];
                 return el;
             });
@@ -52,10 +35,8 @@ class PetController {
             if (req.files) {
                 try {
                     const imageName = await doc.savePhoto(req.files.photo as UploadedFile);
-                    console.log('imageName', imageName);
-                    doc.update({$set: {image: imageName}}, (err, doc) => {
-                        console.log(err);
-                        console.log(doc);
+                    doc.update({$set: {image: '//' + req.get('host') + imageName}}, (err, doc) => {
+
                     });
                 } catch (e) {
                     return res.status(500).json(e);
